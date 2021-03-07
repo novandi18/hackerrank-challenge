@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Binary Calculator</title>
+    <style>
+        #res {
+            width: 81%;
+            height: 48px;
+            font-size: 20px;
+            background: #d3d3d3;
+            border: solid;
+        }
+
+        .btnContainer {
+            width: 90%;
+            margin-top: 10px;
+        }
+
+        .btnContainer > .btnStyle1, .btnStyle2, .btnStyle3 {
+            width: 22%;
+            height: 36px;
+            font-size: 18px;
+        }
+
+        .btnContainer > .btnStyle1 {
+            background: lightgreen;
+            color: brown;
+        }
+
+        .btnContainer > .btnStyle2 {
+            background: darkgreen;
+            color: white;
+        }
+
+        .btnContainer > .btnStyle3 {
+            background: black;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="res"></div>
+    <div class="btnContainer">
+        <button type="button" class="btnStyle1" id="btn0">0</button>
+        <button type="button" class="btnStyle1" id="btn1">1</button>
+        <button type="button" class="btnStyle2" id="btnClr">C</button>
+        <button type="button" class="btnStyle2" id="btnEql">=</button>
+        <button type="button" class="btnStyle3" id="btnSum">+</button>
+        <button type="button" class="btnStyle3" id="btnSub">-</button>
+        <button type="button" class="btnStyle3" id="btnMul">*</button>
+        <button type="button" class="btnStyle3" id="btnDiv">/</button>
+    </div>
+
+    <script>
+        function onButton(e) {
+            let btn = e.target || e.srcElement;
+            let action = document.getElementById(btn.id).innerHTML;
+            let res = document.getElementById('res');
+            
+            switch(action) {
+                case 'C':
+                    res.innerHTML = '';
+                    break;
+                case '=':
+                    let expr = res.innerHTML;
+                    let nums = /(\d+)/g;
+                    // Replace all base 2 nums with base 10 equivs
+                    expr = expr.replace(nums, function(match) {
+                        return parseInt(match, 2);
+                    })
+                    // eval in base 10 and convert to base 2
+                    res.innerHTML = Math.floor(eval(expr).toString(2));
+                    break;
+                default:
+                    res.innerHTML += action;
+                    break;
+            }
+        }
+
+        let buttons = document.getElementsByTagName('button');
+        for (let button of buttons) {
+            button.onclick = onButton;
+        }
+    </script>
+</body>
+</html>
